@@ -1,15 +1,16 @@
 package Catalog;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Song {
+
     public int id;
     public String title;
+
     public String artist;
     public String category;
 
-    private ArrayList<Playlist> playlistsHaveSong;
+    private ArrayList<Playlist> inPlaylists;
 
     public Song(int id, String title, String artist, String category) {
         this.id = id;
@@ -18,12 +19,13 @@ public class Song {
         this.category = category;
     }
 
-    public ArrayList<Playlist> getPlaylistsHaveSong() {
-        return playlistsHaveSong;
+    public ArrayList<Playlist> getInPlaylists() {
+        return inPlaylists;
     }
+    public ArrayList<>
 
-    public void setPlaylistsHaveSong(ArrayList<Playlist> playlistsHaveSong) {
-        this.playlistsHaveSong = playlistsHaveSong;
+    public void setInPlaylists(ArrayList<Playlist> inPlaylists) {
+        this.inPlaylists = inPlaylists;
     }
 
     @Override
