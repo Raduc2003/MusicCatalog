@@ -5,30 +5,25 @@ import java.sql.*;
 public class JDBC {
     private static final String url = "jdbc:mysql://89.42.218.32:3306/r116501soft_song_catalog";
     private static final String user = "r116501soft_root";
-
     private static final String password ="zYP~#3oFg&n=";
 
 
-    public static void getConnection(){
-
-
-    }
-    public static void main(String[] args) throws SQLException {
+    protected Connection getConnection() {
         Connection connection = null;
         try {
-            connection = DriverManager.getConnection(
-                     "jdbc:mysql://89.42.218.32:3306/r116501soft_song_catalog",
-                    "r116501soft_root",
-                    "zYP~#3oFg&n="
-            );
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(url,user,password);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            // Tratează excepțiile pentru JDBC
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // Tratează excepția pentru Class.forName
+            e.printStackTrace();
         }
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select * from test;");
-        while (resultSet.next()){
-            System.out.println(resultSet.getString("Id"));
-
-        }
+        return connection;
     }
+
+
+
+
 }

@@ -1,9 +1,9 @@
 package DB;
 
+import java.util.ArrayList;
+
 public interface DbInteractions {
-    void getData();
-    void update();
-    void create();
-    void delete();
+    ArrayList getData();
+
 
 }

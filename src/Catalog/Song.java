@@ -22,7 +22,6 @@ public class Song {
     public ArrayList<Playlist> getInPlaylists() {
         return inPlaylists;
     }
-    public ArrayList<>
 
     public void setInPlaylists(ArrayList<Playlist> inPlaylists) {
         this.inPlaylists = inPlaylists;
