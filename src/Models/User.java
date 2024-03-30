@@ -1,3 +1,5 @@
+package Models;
+
 public class User {
     protected int id;
     protected String email;

@@ -2,13 +2,14 @@ package DB;
 
 import java.sql.*;
 
-public class JDBC {
+public abstract class JDBC {
+    //le iau din application properties
     private static final String url = "jdbc:mysql://89.42.218.32:3306/r116501soft_song_catalog";
     private static final String user = "r116501soft_root";
     private static final String password ="zYP~#3oFg&n=";
 
 
-    protected Connection getConnection() {
+    protected static Connection getConnection() {
         Connection connection = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -22,8 +23,5 @@ public class JDBC {
         }
         return connection;
     }
-
-
-
 
 }

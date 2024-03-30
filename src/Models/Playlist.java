@@ -1,7 +1,6 @@
-package Catalog;
+package Models;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class Playlist {
