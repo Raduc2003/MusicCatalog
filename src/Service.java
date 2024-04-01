@@ -1,4 +1,5 @@
 import DB.SongRepository;
+import DB.UserRepository;
 import Models.Album;
 import Models.Playlist;
 import Models.Song;
@@ -10,23 +11,23 @@ import java.util.List;
 public  class Service {
 
     //storage
-    private static ArrayList<User> users;
+    private static User user;
     private static List<Song> songs;
     private static List<Playlist> playlists;
     private static List<Album> albums;
 
     //repositories
     private static SongRepository songRepository = SongRepository.getInstance();
-
+    private static UserRepository userRepository = UserRepository.getInstance();
     //getter setter
 
 
-    public static ArrayList<User> getUsers() {
-        return users;
+    public static User getUser(String email,String password) {
+        return userRepository.getUser(email,password);
     }
 
-    public static void setUsers(ArrayList<User> users) {
-        Service.users = users;
+    public static void addUser(String email,String password) {
+        userRepository.addUser(email,password);
     }
 
     public static List<Song> getSongs() {

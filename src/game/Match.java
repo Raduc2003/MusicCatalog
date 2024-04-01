@@ -6,9 +6,9 @@ import java.util.*;
 
 public class Match {
 
-    private Dictionary<Song,Integer> topDict = new Hashtable<Song,Integer>();
+    private final Map<Song,Integer> topDict = new Hashtable<Song,Integer>();
 
-    public Match(ArrayList<Song> songs){
+    public Match(List<Song> songs){
         for ( Song song : songs){
             topDict.put(song,0);
         }
@@ -36,9 +36,9 @@ public class Match {
 
     public Song getRandSong() {
         ArrayList<Song> zeroValueSongs = new ArrayList<>();
-        Enumeration<Song> keys = topDict.keys();
-        while (keys.hasMoreElements()) {
-            Song key = keys.nextElement();
+        Set<Song> keys = topDict.keySet(); // Directly use Set for keySet
+
+        for (Song key : keys) { // Use enhanced for loop for iteration
             if (topDict.get(key).equals(0)) {
                 zeroValueSongs.add(key);
             }
@@ -49,10 +49,19 @@ public class Match {
         }
 
         Random random = new Random();
-        int randomIndex = random.nextInt(zeroValueSongs.size());
-        return zeroValueSongs.get(randomIndex);
+        int randomIndex = random.nextInt(zeroValueSongs.size()); // Pick a random index
+        return zeroValueSongs.get(randomIndex); // Return the song at the random index
     }
-    public  ArrayList<Song> startGame(){
+    private  Map<Song, Integer> sortByValue(Map<Song, Integer> map) {
+        Map<Song, Integer> sortedMap = new LinkedHashMap<>();
+        map.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue()) // For descending order, use .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .forEachOrdered(entry -> sortedMap.put(entry.getKey(), entry.getValue()));
+
+        return sortedMap;
+    }
+    public  Map<Song,Integer> startGame(){
         Song a = getRandSong();
         Song b = getRandSong();
         Song winner = null;
@@ -71,16 +80,16 @@ public class Match {
 
             Scanner in = new Scanner(System.in);
             String r = in.nextLine();
-            if (r == "y"){
-                exit=1;
-            } else if (r=="n") {
+            if (Objects.equals(r, "y")){
                 exit=0;
+            } else if (Objects.equals(r, "n")) {
+                exit=1;
             }
             else {
                 System.out.println("Bad input");
             }
-
         }
-        return 
+        return sortByValue(topDict);
     }
+
 }
