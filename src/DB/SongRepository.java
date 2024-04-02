@@ -1,5 +1,6 @@
 package DB;
 
+import Models.Album;
 import Models.Song;
 
 import java.sql.Connection;
@@ -23,10 +24,57 @@ public class SongRepository extends JDBC  {
 
     private static final String query = "SELECT * FROM Song;";
 
-//    public ArrayList<Song> addData() {
-//
-//    }
-    public  ArrayList<Song> getData() {
+    public void addSongToUser(int idSong,int idUser){
+        String query = "INSERT INTO Song_in_catalog (idSong, idUser) VALUES (?,?);";
+        try (Connection connection = getConnection();
+             // Try-with-resources statement for PreparedStatement ensures it's also closed
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, idSong);
+            statement.setInt(2, idUser);
+
+            // Execute the update
+            statement.executeUpdate(); // Use executeUpdate for INSERT, UPDATE, DELETE operations
+
+        } catch (SQLException e) {
+            // Consider a more specific handling or logging of the SQL exception here
+            throw new RuntimeException("Failed to add song in catalog", e);
+        }
+    }
+    public void addSongToPlaylist(int idSong,int idPlaylist){
+        String query = "INSERT INTO Song_in_playlist (idSong, idPlaylist) VALUES (?,?);";
+        try (Connection connection = getConnection();
+             // Try-with-resources statement for PreparedStatement ensures it's also closed
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, idSong);
+            statement.setInt(2, idPlaylist);
+
+            // Execute the update
+            statement.executeUpdate(); // Use executeUpdate for INSERT, UPDATE, DELETE operations
+
+        } catch (SQLException e) {
+            // Consider a more specific handling or logging of the SQL exception here
+            throw new RuntimeException("Failed to add song in Playlist", e);
+        }
+    }
+    public void addSongDB(String title,String artist, String category) {
+        String postQuery = "INSERT INTO Song (title,artist,category) VALUES(?,?,?);";
+        try (Connection connection = getConnection();
+             // Try-with-resources statement for PreparedStatement ensures it's also closed
+             PreparedStatement statement = connection.prepareStatement(postQuery)) {
+            statement.setString(1, title);
+            statement.setString(2, artist);
+            statement.setString(3, category);
+            // Execute the update
+            statement.executeUpdate(); // Use executeUpdate for INSERT, UPDATE, DELETE operations
+
+        } catch (SQLException e) {
+            // Consider a more specific handling or logging of the SQL exception here
+            throw new RuntimeException("Failed to add Song", e);
+        }
+    }
+    public  ArrayList<Song> getAllSongs() {
         ArrayList<Song> songs = new ArrayList<>();
         try(Connection connection =getConnection();
             PreparedStatement statement = connection.prepareStatement(query);){
@@ -43,5 +91,45 @@ public class SongRepository extends JDBC  {
             throw new RuntimeException(e);
         }
         return songs;
+    }
+    public  ArrayList<Song> getSongs(int idUser) {
+
+        ArrayList<Song> songs = new ArrayList<>();
+        String query ="SELECT s.id, s.title, s.artist, s.category FROM Song s JOIN Song_in_catalog sic ON s.id = sic.idSong WHERE sic.idUser = ?;";
+        try(Connection connection =getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);){
+            statement.setInt(1,idUser);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()){
+
+                int id = rs.getInt("id");
+                String title = rs.getString("title");
+                String artist = rs.getString("artist");
+                String category = rs.getString("category");
+                songs.add(new Album(id,title,artist,category,songs));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return songs;
+    }
+    public Song getSong(String name){
+        String query ="Select * from Song where title=?;";
+
+        Song song = null;
+        try(Connection conn = getConnection();
+            PreparedStatement statement =conn.prepareStatement(query)){
+            statement.setString(1,name);
+            try(ResultSet rs = statement.executeQuery()){
+                if (rs.next()){
+                    song = new Song(rs.getInt("id"),rs.getString("title"), rs.getString("artist"), rs.getString("category"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return song;
+
     }
 }

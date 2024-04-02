@@ -35,11 +35,8 @@ public class UserRepository extends JDBC {
             statement.setString(2, password);
 
             try (ResultSet rs = statement.executeQuery()) {
-                if (rs.next()) { // Use if instead of while if expecting a single result
-                    // Assuming User has a constructor that matches the columns in your query
-                    // Adjust this based on your User model
+                if (rs.next()) {
                     user = new User(rs.getInt("id"), rs.getString("email"), rs.getString("password"));
-                    // No need to loop through more results if you're only interested in one user
                 }
             }
 
