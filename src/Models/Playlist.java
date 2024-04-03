@@ -5,10 +5,14 @@ import java.util.Objects;
 
 public class Playlist {
 //    Problema cu playlsit gol
+  protected int id;
+    protected int idUser;
     protected String name;
     protected ArrayList<Song> songsInPlaylist;
 
-    public Playlist(int userId,String name,  ArrayList<Song> songsInPlaylist) {
+    public Playlist(int id, int idUser, String name, ArrayList<Song> songsInPlaylist) {
+        this.id = id;
+        this.idUser = idUser;
         this.name = name;
         this.songsInPlaylist = songsInPlaylist;
     }
@@ -21,7 +25,9 @@ public class Playlist {
         this.name = name;
     }
 
-
+    public int getId() {
+        return id;
+    }
 
     public ArrayList<Song> getSongsInPlaylist() {
         return songsInPlaylist;

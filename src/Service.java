@@ -71,8 +71,8 @@ public  class Service {
         songRepository.addSongToPlaylist(idSong,idPlayist);
     }
 
-    public static void addToCatalog(int idSong,int idPlayist){
-        songRepository.addSongToPlaylist(idSong,idPlayist);
+    public static void addToCatalog(int idSong,int idUser){
+        songRepository.addSongToUser(idSong,idUser);
     }
 
     public static Map<Song,Integer> startGame(int idUser){

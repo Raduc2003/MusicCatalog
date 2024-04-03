@@ -58,7 +58,7 @@ public class PlaylistRepository extends JDBC  {
                 String title = rs.getString("name");
 
                 ArrayList<Song> songs = getSongsInPlaylist(title);
-               Playlists.add(new Playlist(id,title,songs));
+               Playlists.add(new Playlist(id,idUser,title,songs));
             }
 
         } catch (SQLException e) {
@@ -75,7 +75,7 @@ public class PlaylistRepository extends JDBC  {
             statement.setString(1,name);
             try(ResultSet rs = statement.executeQuery()){
                 if (rs.next()){
-                    Playlist = new Playlist(rs.getInt("id"),rs.getString("name"),songs);
+                    Playlist = new Playlist(rs.getInt("id"),rs.getInt("idUser"),rs.getString("name"),songs);
                 }
             }
         } catch (SQLException e) {

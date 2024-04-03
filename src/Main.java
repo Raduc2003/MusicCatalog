@@ -1,6 +1,7 @@
 import Models.*;
 import game.Leaderboard;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
@@ -104,12 +105,46 @@ public class Main {
     }
 
     private static void addSongToCatalog() {
+        //to be implemented a partial Search feature
+        System.out.println("Search up a Song to add to catalog:");
+        String songName = in.nextLine();
+        Song song  =Service.getSong(songName);
+        if(song==null){
+            System.out.println("Song doesn't exist");
+        }
+        else{
+            int idSong = song.id;
+            Service.addToCatalog(idSong,Service.getUser().getId());
+        }
+
     }
 
     private static void addSongToPlaylist() {
+        //to be implemented a partial Search feature
+        System.out.println("Select the desired playlist");
+        ArrayList<Playlist> playlists = Service.getPlaylists(Service.getUser().getId());
+        int i=1;
+        for(Playlist playlist : playlists){
+            System.out.println(i+"."+playlist.getName());
+        }
+        System.out.println("choice:");
+        int choice = in.nextInt();
+        int idPLaylist = playlists.get(choice-1).getId();
+        System.out.println("Search up a Song to add to playlist:");
+        String songName = in.nextLine();
+        Song song  =Service.getSong(songName);
+        if(song==null){
+            System.out.println("Song doesn't exist");
+        }
+        else{
+            int idSong = song.id;
+            Service.addToPlaylist(idSong,idPLaylist);
+        }
+
     }
 
     private static void addNewSongToDB() {
+
     }
 
     private static void viewPlaylists() {
@@ -161,7 +196,7 @@ public class Main {
         }
     }
     public static void clearConsole() {
-        for (int i = 0; i < 100; i++) { // Alegeți un număr care este suficient pentru dimensiunea ferestrei consolei
+        for (int i = 0; i < 100; i++) {
             System.out.println();
         }
     }
