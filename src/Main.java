@@ -144,19 +144,23 @@ public class Main {
     }
 
     private static void addNewSongToDB() {
-
+        System.out.println("work in progress");
     }
 
     private static void viewPlaylists() {
+        System.out.println("work in progress");
     }
 
     private static void searchAlbum() {
+        System.out.println("work in progress");
     }
 
     private static void searchSong() {
+        System.out.println("work in progress");
     }
 
     private static void viewAlbums() {
+        System.out.println("work in progress");
     }
 
     private static void matchUpBetweenSongs() {
