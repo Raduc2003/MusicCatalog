@@ -106,7 +106,7 @@ public class SongRepository extends JDBC  {
                 String title = rs.getString("title");
                 String artist = rs.getString("artist");
                 String category = rs.getString("category");
-                songs.add(new Album(id,title,artist,category,songs));
+                songs.add(new Song(id,title,artist,category));
             }
 
         } catch (SQLException e) {
@@ -132,4 +132,11 @@ public class SongRepository extends JDBC  {
         return song;
 
     }
+
+//    public static void main(String[] args) {
+//        ArrayList<Song> songs = new ArrayList<>();
+//        SongRepository songRepository1 = SongRepository.getInstance();
+//        songs = songRepository1.getSongs(1);
+//        System.out.println(songs);
+//    }
 }

@@ -56,7 +56,7 @@ public class Match {
         Map<Song, Integer> sortedMap = new LinkedHashMap<>();
         map.entrySet()
                 .stream()
-                .sorted(Map.Entry.comparingByValue()) // For descending order, use .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .sorted(Map.Entry.comparingByValue())
                 .forEachOrdered(entry -> sortedMap.put(entry.getKey(), entry.getValue()));
 
         return sortedMap;
