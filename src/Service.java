@@ -53,7 +53,9 @@ public  class Service {
     public static ArrayList<Album> getAlbums(int idUser){
         return albumRepository.getAlbums(idUser);
     }
-
+    public static void addSongDb(String title,String artist,String category){
+        songRepository.addSongDB(title,artist,category);
+    }
     public static Song getSong(String title){
         return songRepository.getSong(title);
     }

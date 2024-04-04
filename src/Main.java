@@ -1,6 +1,7 @@
 import Models.*;
 import game.Leaderboard;
 
+import java.sql.SQLException;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Map;
@@ -52,12 +53,15 @@ public class Main {
                      clearConsole();
                     break;
                 case 4:
-                    viewSongs();
+
                     clearConsole();
+
+                    viewSongs();
                     break;
                 case 5:
-                    viewAlbums();
                     clearConsole();
+                    viewAlbums();
+
                     break;
                 case 6:
                     searchSong();
@@ -68,8 +72,9 @@ public class Main {
                     clearConsole();
                     break;
                 case 8:
-                    viewPlaylists();
                     clearConsole();
+
+                    viewPlaylists();
                     break;
                 case 9:
                     addNewSongToDB();
@@ -105,6 +110,7 @@ public class Main {
     }
 
     private static void addSongToCatalog() {
+        //add sql error handling for duplicate
         //to be implemented a partial Search feature
         System.out.println("Search up a Song to add to catalog:");
         String songName = in.nextLine();
@@ -121,6 +127,7 @@ public class Main {
 
     private static void addSongToPlaylist() {
         //to be implemented a partial Search feature
+        //add sql error handling for duplicate
         System.out.println("Select the desired playlist");
         ArrayList<Playlist> playlists = Service.getPlaylists(Service.getUser().getId());
         int i=1;
@@ -129,6 +136,7 @@ public class Main {
         }
         System.out.println("choice:");
         int choice = in.nextInt();
+        in.nextLine();
         int idPLaylist = playlists.get(choice-1).getId();
         System.out.println("Search up a Song to add to playlist:");
         String songName = in.nextLine();
@@ -139,17 +147,35 @@ public class Main {
         else{
             int idSong = song.id;
             Service.addToPlaylist(idSong,idPLaylist);
+            System.out.println("song has been added to the playlist");
         }
 
     }
 
     private static void addNewSongToDB() {
-        System.out.println("work in progress");
+//        System.out.println("work in progress");
+        System.out.println("Add new song to database");
+        System.out.println("title:");
+        String title = in.nextLine();
+        System.out.println("artist:");
+        String artist = in.nextLine();
+        System.out.println("category:");
+        String category = in.nextLine();
+        Service.addSongDb(title,artist,category);
+//        Song newSong = song
     }
 
     private static void viewPlaylists() {
-        System.out.println("work in progress");
+//        System.out.println("work in progress");
+        System.out.println("User playlists");
+        ArrayList<Playlist> playlists = Service.getPlaylists(Service.getUser().getId());
+        int i=1;
+        for(Playlist playlist : playlists){
+            System.out.println(i+"."+playlist.getName());
+        }
+
     }
+
 
     private static void searchAlbum() {
         System.out.println("work in progress");
@@ -160,7 +186,14 @@ public class Main {
     }
 
     private static void viewAlbums() {
-        System.out.println("work in progress");
+//        System.out.println("work in progress");
+        System.out.println("User Albums");
+        ArrayList<Album> albums = Service.getAlbums(Service.getUser().getId());
+        int i=1;
+        for(Album album : albums){
+            System.out.println(i+"."+album.title);
+            i++;
+        }
     }
 
     private static void matchUpBetweenSongs() {
@@ -190,6 +223,7 @@ public class Main {
     }
 
     private static void viewSongs() {
+        System.out.println("------------Songs------------");
         ArrayList<Song> songs = Service.getAllSongs();
         if (songs.isEmpty()) {
             System.out.println("No songs available.");
@@ -198,6 +232,7 @@ public class Main {
                 System.out.println(song.title + " by " + song.artist);
             }
         }
+        System.out.println("------------------------------");
     }
     public static void clearConsole() {
         for (int i = 0; i < 100; i++) {

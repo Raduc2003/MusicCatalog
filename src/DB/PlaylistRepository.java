@@ -23,7 +23,7 @@ public class PlaylistRepository extends JDBC  {
 
     public ArrayList<Song> getSongsInPlaylist(String titlePlaylist){
 
-        String query = "SELECT s.id, s.title, s.artist, s.category FROM Song s JOIN Song_in_playlist sia ON s.id = sia.idSong JOIN Playlist a ON sia.idPlaylist = a.id WHERE a.title = ?;";
+        String query = "SELECT s.id, s.title, s.artist, s.category FROM Song s JOIN Song_in_playlist sia ON s.id = sia.idSong JOIN Playlist a ON sia.idPlaylist = a.id WHERE a.name = ?;";
         ArrayList<Song> songs = new ArrayList<>();
         try(Connection connection =getConnection();
             PreparedStatement statement = connection.prepareStatement(query);){
