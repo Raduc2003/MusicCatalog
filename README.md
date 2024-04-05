@@ -1,6 +1,6 @@
-# Nume Aplicație
+# Music Catalog /Leaderboard
 
-O scurtă descriere a aplicației, care evidențiază scopul principal și ce o face unică. Includeți, de asemenea, orice tehnologii sau cadre (frameworks) utilizate în dezvoltarea aplicației.
+
 
 ## Funcționalități
 
@@ -32,5 +32,5 @@ O scurtă descriere a aplicației, care evidențiază scopul principal și ce o 
 
 ### Prerechizite
 
-- Java JDK versiunea x
+- Java JDK 
 - JDBC MySql driver
