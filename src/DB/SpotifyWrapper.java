@@ -1,4 +1,5 @@
 package DB;
+import Models.Song;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -19,7 +20,9 @@ import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.concurrent.Executors;
 
 public class SpotifyWrapper {
@@ -114,7 +117,7 @@ public class SpotifyWrapper {
         server.start();
     }
 
-    public JsonArray getUserLikedSongs() throws IOException {
+    public List<Song> getUserLikedSongs() throws IOException {
         if (accessToken == null) {
             authenticate();
         }
@@ -126,7 +129,20 @@ public class SpotifyWrapper {
         try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
             String json = EntityUtils.toString(response.getEntity());
             JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-            return jsonObject.getAsJsonArray("items");
+            JsonArray items = jsonObject.getAsJsonArray("items");
+
+            List<Song> likedSongs = new ArrayList<>();
+            for (int i = 0; i < items.size(); i++) {
+                JsonObject item = items.get(i).getAsJsonObject();
+                JsonObject track = item.getAsJsonObject("track");
+                int id = track.get("id").getAsString().hashCode(); // Using hashCode as a simple unique ID
+                String title = track.get("name").getAsString();
+                String artist = track.getAsJsonArray("artists").get(0).getAsJsonObject().get("name").getAsString();
+                String category = track.getAsJsonObject("album").get("name").getAsString(); // Using album name as category
+                likedSongs.add(new Song(id, title, artist, category));
+            }
+
+            return likedSongs;
         } finally {
             httpClient.close();
         }
@@ -135,8 +151,10 @@ public class SpotifyWrapper {
     public static void main(String[] args) {
         try {
             SpotifyWrapper spotifyWrapper = SpotifyWrapper.getInstance();
-            JsonArray likedSongs = spotifyWrapper.getUserLikedSongs();
-            System.out.println(likedSongs);
+            List<Song> likedSongs = spotifyWrapper.getUserLikedSongs();
+            for (Song song : likedSongs) {
+                System.out.println(song);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
