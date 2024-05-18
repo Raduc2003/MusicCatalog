@@ -1,13 +1,15 @@
 package Models;
 
 import java.util.ArrayList;
+import java.util.List;
+
 //va fii singleton
 public class Catalog  {
 
     private int userId;
-    private ArrayList<Song> songs;
-    private ArrayList<Album> albums;
-    private ArrayList<Playlist> playlists;
+    private List<Song> songs;
+    private List<Album> albums;
+    private List<Playlist> playlists;
 
     public int getUserId() {
         return userId;
@@ -17,27 +19,37 @@ public class Catalog  {
         this.userId = userId;
     }
 
-    public ArrayList<Song> getSongs() {
+    public List<Song> getSongs() {
         return songs;
     }
 
-    public void setSongs(ArrayList<Song> songs) {
+    public void setSongs(List<Song> songs) {
         this.songs = songs;
     }
 
-    public ArrayList<Album> getAlbums() {
+    public List<Album> getAlbums() {
         return albums;
     }
 
-    public void setAlbums(ArrayList<Album> albums) {
+    public void setAlbums(List<Album> albums) {
         this.albums = albums;
     }
 
-    public ArrayList<Playlist> getPlaylists() {
+    public List<Playlist> getPlaylists() {
         return playlists;
     }
 
-    public void setPlaylists(ArrayList<Playlist> playlists) {
+    public void setPlaylists(List<Playlist> playlists) {
         this.playlists = playlists;
+    }
+
+    @Override
+    public String toString() {
+        return "Catalog{" +
+                "userId=" + userId +
+                ", songs=" + songs +
+                ", albums=" + albums +
+                ", playlists=" + playlists +
+                '}';
     }
 }

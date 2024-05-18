@@ -1,16 +1,17 @@
 package Models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Song {
 
-    public int id;
-    public String title;
+    protected int id;
+    protected String title;
 
-    public String artist;
-    public String category;
+    protected String artist;
+    protected String category;
 
-    private ArrayList<Playlist> inPlaylists;
+    private List<Playlist> inPlaylists;
 
     public Song(int id, String title, String artist, String category) {
         this.id = id;
@@ -19,11 +20,43 @@ public class Song {
         this.category = category;
     }
 
-    public ArrayList<Playlist> getInPlaylists() {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public List<Playlist> getInPlaylists() {
         return inPlaylists;
     }
 
-    public void setInPlaylists(ArrayList<Playlist> inPlaylists) {
+    public void setInPlaylists(List<Playlist> inPlaylists) {
         this.inPlaylists = inPlaylists;
     }
 

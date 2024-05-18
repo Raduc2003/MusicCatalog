@@ -1,3 +1,5 @@
+package Main;
+
 import DB.AlbumRepository;
 import DB.PlaylistRepository;
 import DB.SongRepository;
@@ -78,7 +80,7 @@ public  class Service {
     }
 
     public static Map<Song,Integer> startGame(int idUser){
-        ArrayList<Song> songs =  getSongs(idUser);
+        List<Song> songs =  getSongs(idUser);
         Match match =new Match(songs);
         return  match.startGame();
     }
@@ -87,14 +89,7 @@ public  class Service {
     }
 
 
-//    public static void main(String[] args) {
-//        ArrayList<Song> songs =new ArrayList<>();
-//
-//        songs = songRepository.getSongs(1);
-//
-//        System.out.println(songs);
-//
-//    }
+
 }
 
 

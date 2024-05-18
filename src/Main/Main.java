@@ -1,16 +1,16 @@
+package Main;
+
 import Models.*;
 import game.Leaderboard;
-
-import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
     private static final Scanner in = new Scanner(System.in);
 
-    private  static ArrayList<Leaderboard> leaderboards = new ArrayList<>();
+    private  static List<Leaderboard> leaderboards = new ArrayList<>();
     public static void main(String[] args) {
         int option;
 
@@ -119,7 +119,7 @@ public class Main {
             System.out.println("Song doesn't exist");
         }
         else{
-            int idSong = song.id;
+            int idSong = song.getId();
             Service.addToCatalog(idSong,Service.getUser().getId());
         }
 
@@ -145,7 +145,7 @@ public class Main {
             System.out.println("Song doesn't exist");
         }
         else{
-            int idSong = song.id;
+            int idSong = song.getId();
             Service.addToPlaylist(idSong,idPLaylist);
             System.out.println("song has been added to the playlist");
         }
@@ -191,7 +191,7 @@ public class Main {
         ArrayList<Album> albums = Service.getAlbums(Service.getUser().getId());
         int i=1;
         for(Album album : albums){
-            System.out.println(i+"."+album.title);
+            System.out.println(i+"."+album.getTitle());
             i++;
         }
     }
@@ -229,7 +229,7 @@ public class Main {
             System.out.println("No songs available.");
         } else {
             for (Song song : songs) {
-                System.out.println(song.title + " by " + song.artist);
+                System.out.println(song.getTitle() + " by " + song.getArtist());
             }
         }
         System.out.println("------------------------------");
