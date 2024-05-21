@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SongRepository extends JDBC  {
 
@@ -74,7 +75,7 @@ public class SongRepository extends JDBC  {
             throw new RuntimeException("Failed to add Song", e);
         }
     }
-    public  ArrayList<Song> getAllSongs() {
+    public  List<Song> getAllSongs() {
         ArrayList<Song> songs = new ArrayList<>();
         try(Connection connection =getConnection();
             PreparedStatement statement = connection.prepareStatement(query);){
@@ -92,7 +93,7 @@ public class SongRepository extends JDBC  {
         }
         return songs;
     }
-    public  ArrayList<Song> getSongs(int idUser) {
+    public  List<Song> getSongs(int idUser) {
 
         ArrayList<Song> songs = new ArrayList<>();
         String query ="SELECT s.id, s.title, s.artist, s.category FROM Song s JOIN Song_in_catalog sic ON s.id = sic.idSong WHERE sic.idUser = ?;";
@@ -133,10 +134,34 @@ public class SongRepository extends JDBC  {
 
     }
 
-//    public static void main(String[] args) {
-//        ArrayList<Song> songs = new ArrayList<>();
-//        SongRepository songRepository1 = SongRepository.getInstance();
-//        songs = songRepository1.getSongs(1);
-//        System.out.println(songs);
-//    }
+    public List<Song> searchSongs(String keyword) {
+        List<Song> songs = new ArrayList<>();
+
+        String query = "SELECT * " +
+                "FROM Song " +
+                "WHERE title LIKE ? OR artist LIKE ? ";
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            String searchKeyword = "%" + keyword + "%";
+            stmt.setString(1, searchKeyword);
+            stmt.setString(2, searchKeyword);
+
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Song song = new Song();
+                    song.setId(rs.getInt("id"));
+                    song.setTitle(rs.getString("title"));
+                    song.setArtist(rs.getString("artist"));
+                    songs.add(song);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return songs;
+    }
 }

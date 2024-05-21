@@ -19,6 +19,7 @@ public class Song {
         this.artist = artist;
         this.category = category;
     }
+    public Song(){}
 
     public int getId() {
         return id;

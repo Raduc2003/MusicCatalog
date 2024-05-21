@@ -4,6 +4,8 @@ import DB.*;
 import Models.*;
 import game.Match;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,13 +36,21 @@ public  class Service {
         userCatalog.setUser(user);
         return  user;
     }
+
+    public static void spotifyLogin() throws IOException {
+        spotifyWrapper.authenticate();
+        userCatalog.setSpotifyToken(spotifyWrapper.getAccessToken());
+    }
+    public static void getSpotifySongs() throws IOException {
+        List<Song> songs = spotifyWrapper.getUserLikedSongs();
+        userCatalog.setSpotifySongs(songs);
+    }
+
     public static void addUser(String email,String password) {
         userRepository.addUser(email,password);
     }
 //
-    public static Song searchSong(String title){
-        return songRepository.getSong(title);
-    }
+
 //
     public static List<Song> getAllSongs(){
         return songRepository.getAllSongs();
@@ -61,7 +71,25 @@ public  class Service {
     public static Song getSong(String title){
         return songRepository.getSong(title);
     }
+
+    public static List<Song> searchSong(String keyword){
+        try {
+            return songRepository.searchSongs(keyword);
+        }
+        catch (Exception e){
+            return new ArrayList<>();
+        }
+    }
 //
+    public static List<Album> searchAlbum(String keyword){
+        try {
+            return albumRepository.searchAlbums(keyword);
+        }
+        catch (Exception e){
+            return new ArrayList<>();
+        }
+    }
+
     public static Album getAlbum(String title){
         return albumRepository.getAlbum(title);
     }
@@ -71,23 +99,82 @@ public  class Service {
         return userCatalog.getPlaylists();
 
     }
-//
-    public static void addToPlaylist(int idSong,int idPlayist){
-        songRepository.addSongToPlaylist(idSong,idPlayist);
+    public static List<Song> getSongsInPlaylist(int idPlaylist){
+        List<Song> songsInPlaylist;
+        for (Playlist playlist : userCatalog.getPlaylists()){
+            if(playlist.getId()==idPlaylist){
+                songsInPlaylist = playlist.getSongsInPlaylist();
+                return songsInPlaylist;
+            }
+        }
+        return new ArrayList<>();
     }
+
 //
-    public static void addToCatalog(int idSong){
+public static void addToCatalog(int idSong) {
+    try {
         songRepository.addSongToUser(idSong, userCatalog.getUserId());
+        System.out.println("Song added to catalog successfully.");
+    } catch (RuntimeException e) {
+        Throwable cause = e.getCause();
+        if (cause instanceof SQLException) {
+            handleCatalogSQLException((SQLException) cause);
+        } else {
+            System.out.println("An unexpected error occurred: " + e.getMessage());
+        }
     }
-//
+}
+
+    public static void addToPlaylist(int idSong, int idPlaylist) {
+        try {
+            songRepository.addSongToPlaylist(idSong, idPlaylist);
+            System.out.println("Song added to playlist successfully.");
+        } catch (RuntimeException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof SQLException) {
+                handlePlaylistSQLException((SQLException) cause);
+            } else {
+                System.out.println("An unexpected error occurred: " + e.getMessage());
+            }
+        }
+    }
+
+    private static void handleCatalogSQLException(SQLException e) {
+        int errorCode = e.getErrorCode();
+
+        if (errorCode == 1062) { // MySQL duplicate entry
+            System.out.println("Song already added to catalog.");
+        } else {
+            System.out.println("Database error: " + e.getMessage());
+        }
+    }
+
+    private static void handlePlaylistSQLException(SQLException e) {
+        int errorCode = e.getErrorCode();
+
+        if (errorCode == 1062) { // MySQL duplicate entry
+            System.out.println("Song already added to playlist.");
+        } else {
+            System.out.println("Database error: " + e.getMessage());
+        }
+    }
     public static Map<Song,Integer> startGame(){
         List<Song> songs =  userCatalog.getSongs();
         Match match =new Match(songs);
         return  match.startGame();
     }
-//
-
-
+    public static void createPlaylist(String name) {
+        playlistRepository.addPlaylist(userCatalog.getUserId(),name);
+    }
+    public static void deletePlaylist(int idPlaylist) {
+        try{
+            playlistRepository.deletePlaylist(idPlaylist);
+            System.out.println("Playlist deleted successfully.");
+        }
+        catch (RuntimeException e){
+            System.out.println("An unexpected error occurred: " + e.getMessage());
+        }
+    }
 
 }
 

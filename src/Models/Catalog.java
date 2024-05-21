@@ -15,11 +15,18 @@ public class Catalog  {
     private List<Playlist> playlists;
     private List<Leaderboard> leaderboards;
     private List<Song> spotifySongs;
+
+    private String spotifyToken;
     private static Catalog catalogInstc=null;
 
     private Catalog(){}
 
-
+    public String getSpotifyToken() {
+        return spotifyToken;
+    }
+    public void setSpotifyToken(String spotifyToken) {
+        this.spotifyToken = spotifyToken;
+    }
     public User getUser() {
         return user;
     }

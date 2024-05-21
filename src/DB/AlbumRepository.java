@@ -85,4 +85,26 @@ public class AlbumRepository extends JDBC  {
         return album;
 
     }
+
+    public List<Album> searchAlbums(String keyword) {
+        String query = "SELECT * FROM Album WHERE title LIKE ?;";
+        List<Album> albums = new ArrayList<>();
+        try(Connection connection =getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);){
+            statement.setString(1,"%"+keyword+"%");
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()){
+                int id = rs.getInt("id");
+                String title = rs.getString("title");
+                String artist = rs.getString("artist");
+                String category = rs.getString("category");
+                List<Song> songs = getSongsInAlbum(title);
+                albums.add(new Album(id,title,artist,category,songs));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return albums;
+    }
 }

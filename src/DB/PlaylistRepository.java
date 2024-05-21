@@ -118,4 +118,15 @@ public class PlaylistRepository extends JDBC  {
         return Playlist;
 
     }
+
+    public void deletePlaylist(int idPlaylist) {
+        String query = "DELETE FROM Playlist WHERE id = ?;";
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, idPlaylist);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

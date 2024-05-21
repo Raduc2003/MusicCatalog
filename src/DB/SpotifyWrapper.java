@@ -53,7 +53,7 @@ public class SpotifyWrapper {
         return clientSecret;
     }
 
-    private String getAccessToken() {
+    public String getAccessToken() {
         return accessToken;
     }
 
