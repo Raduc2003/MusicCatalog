@@ -29,6 +29,7 @@ public class PlaylistRepository extends JDBC  {
         try(Connection connection =getConnection();
             PreparedStatement statement = connection.prepareStatement(query);){
             statement.setString(1,titlePlaylist);
+            logQuery("SELECT", query);
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
                 int id = rs.getInt("id");
@@ -52,6 +53,7 @@ public class PlaylistRepository extends JDBC  {
         try(Connection connection =getConnection();
             PreparedStatement statement = connection.prepareStatement(query);){
             statement.setInt(1,idUser);
+            logQuery("SELECT", query);
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
 
@@ -75,6 +77,7 @@ public class PlaylistRepository extends JDBC  {
             PreparedStatement statement = connection.prepareStatement(query)){
             statement.setInt(1,idUser);
             statement.setString(2,title);
+            logQuery("INSERT", query);
             statement.executeUpdate();
             status = "Playlist added";
             return status;
@@ -91,6 +94,7 @@ public class PlaylistRepository extends JDBC  {
             PreparedStatement statement = connection.prepareStatement(query)){
             statement.setString(1,title);
             statement.setInt(2,idPlaylist);
+            logQuery("UPDATE", query);
             statement.executeUpdate();
             status = "Playlist name changed ";
             return status;
@@ -107,6 +111,7 @@ public class PlaylistRepository extends JDBC  {
         try(Connection conn = getConnection();
             PreparedStatement statement =conn.prepareStatement(query)){
             statement.setString(1,name);
+            logQuery("SELECT", query);
             try(ResultSet rs = statement.executeQuery()){
                 if (rs.next()){
                     Playlist = new Playlist(rs.getInt("id"),rs.getInt("idUser"),rs.getString("name"),songs);
@@ -123,7 +128,9 @@ public class PlaylistRepository extends JDBC  {
         String query = "DELETE FROM Playlist WHERE id = ?;";
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
+
             statement.setInt(1, idPlaylist);
+            logQuery("DELETE", query);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

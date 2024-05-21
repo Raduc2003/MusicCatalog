@@ -1,5 +1,5 @@
 package DB;
-
+import Services.AuditService;
 import java.sql.*;
 
 public abstract class JDBC {
@@ -8,7 +8,10 @@ public abstract class JDBC {
     private static final String user = "r116501soft_root";
     private static final String password ="zYP~#3oFg&n=";
 
-
+    protected static AuditService auditService = new AuditService();
+    protected void logQuery(String operation, String query) {
+        auditService.log(operation, query);
+    }
     protected static Connection getConnection() {
         Connection connection = null;
         try {

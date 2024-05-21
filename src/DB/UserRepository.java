@@ -33,7 +33,7 @@ public class UserRepository extends JDBC {
             // Set the parameters for the PreparedStatement
             statement.setString(1, email);
             statement.setString(2, password);
-
+            logQuery("SELECT", getQuery);
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
                     user = new User(rs.getInt("id"), rs.getString("email"), rs.getString("password"));
@@ -56,7 +56,7 @@ public class UserRepository extends JDBC {
 
             statement.setString(1, email);
             statement.setString(2, password);
-
+            logQuery("INSERT", postQuery);
             // Execute the update
             statement.executeUpdate(); // Use executeUpdate for INSERT, UPDATE, DELETE operations
 

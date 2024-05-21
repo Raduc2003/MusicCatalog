@@ -13,7 +13,7 @@ public class Catalog  {
     private List<Song> songs;
     private List<Album> albums;
     private List<Playlist> playlists;
-    private List<Leaderboard> leaderboards;
+    private List<Leaderboard> leaderboards = new ArrayList<>();
     private List<Song> spotifySongs;
 
     private String spotifyToken;

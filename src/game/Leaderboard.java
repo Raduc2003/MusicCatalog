@@ -40,9 +40,9 @@ public class Leaderboard {
 
     @Override
     public String toString() {
-        return "Leaderboard{" +
-                "userId=" + userId +
-                ", top=" + top +
+        return "Leaderboard{" + "\n"+
+                "userId=" + userId +"\n"+
+                ", top=" + top + "\n"+
                 ", winner=" + winner +
                 '}';
     }

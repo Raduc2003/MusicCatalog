@@ -29,6 +29,7 @@ public class AlbumRepository extends JDBC  {
         try(Connection connection =getConnection();
             PreparedStatement statement = connection.prepareStatement(query);){
             statement.setString(1,titleAlbum);
+            logQuery("SELECT", query);
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
                 int id = rs.getInt("id");
@@ -51,6 +52,7 @@ public class AlbumRepository extends JDBC  {
         try(Connection connection =getConnection();
             PreparedStatement statement = connection.prepareStatement(query);){
             statement.setInt(1,idUser);
+            logQuery("SELECT", query);
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
 
@@ -74,6 +76,7 @@ public class AlbumRepository extends JDBC  {
         try(Connection conn = getConnection();
             PreparedStatement statement =conn.prepareStatement(query)){
             statement.setString(1,name);
+            logQuery("SELECT", query);
             try(ResultSet rs = statement.executeQuery()){
                 if (rs.next()){
                     album = new Album(rs.getInt("id"),rs.getString("title"), rs.getString("artist"), rs.getString("category"),songs);
@@ -92,6 +95,7 @@ public class AlbumRepository extends JDBC  {
         try(Connection connection =getConnection();
             PreparedStatement statement = connection.prepareStatement(query);){
             statement.setString(1,"%"+keyword+"%");
+            logQuery("SELECT", query);
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
                 int id = rs.getInt("id");

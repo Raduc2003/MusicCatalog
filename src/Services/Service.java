@@ -1,4 +1,4 @@
-package Main;
+package Services;
 
 import DB.*;
 import Models.*;
@@ -158,8 +158,7 @@ public static void addToCatalog(int idSong) {
             System.out.println("Database error: " + e.getMessage());
         }
     }
-    public static Map<Song,Integer> startGame(){
-        List<Song> songs =  userCatalog.getSongs();
+    public static Map<Song,Integer> startGame(List<Song> songs){
         Match match =new Match(songs);
         return  match.startGame();
     }

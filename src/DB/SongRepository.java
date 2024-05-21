@@ -33,6 +33,7 @@ public class SongRepository extends JDBC  {
 
             statement.setInt(1, idSong);
             statement.setInt(2, idUser);
+            logQuery("INSERT", query);
 
             // Execute the update
             statement.executeUpdate(); // Use executeUpdate for INSERT, UPDATE, DELETE operations
@@ -50,7 +51,7 @@ public class SongRepository extends JDBC  {
 
             statement.setInt(1, idSong);
             statement.setInt(2, idPlaylist);
-
+            logQuery("INSERT", query);
             // Execute the update
             statement.executeUpdate(); // Use executeUpdate for INSERT, UPDATE, DELETE operations
 
@@ -67,6 +68,7 @@ public class SongRepository extends JDBC  {
             statement.setString(1, title);
             statement.setString(2, artist);
             statement.setString(3, category);
+            logQuery("INSERT", postQuery);
             // Execute the update
             statement.executeUpdate(); // Use executeUpdate for INSERT, UPDATE, DELETE operations
 
@@ -80,6 +82,7 @@ public class SongRepository extends JDBC  {
         try(Connection connection =getConnection();
             PreparedStatement statement = connection.prepareStatement(query);){
             ResultSet rs = statement.executeQuery();
+            logQuery("SELECT", query);
             while(rs.next()){
                 int id = rs.getInt("id");
                 String title = rs.getString("title");
@@ -100,6 +103,7 @@ public class SongRepository extends JDBC  {
         try(Connection connection =getConnection();
             PreparedStatement statement = connection.prepareStatement(query);){
             statement.setInt(1,idUser);
+            logQuery("SELECT", query);
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
 
@@ -122,6 +126,7 @@ public class SongRepository extends JDBC  {
         try(Connection conn = getConnection();
             PreparedStatement statement =conn.prepareStatement(query)){
             statement.setString(1,name);
+            logQuery("SELECT", query);
             try(ResultSet rs = statement.executeQuery()){
                 if (rs.next()){
                     song = new Song(rs.getInt("id"),rs.getString("title"), rs.getString("artist"), rs.getString("category"));
@@ -147,7 +152,7 @@ public class SongRepository extends JDBC  {
             String searchKeyword = "%" + keyword + "%";
             stmt.setString(1, searchKeyword);
             stmt.setString(2, searchKeyword);
-
+            logQuery("SELECT", query);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {

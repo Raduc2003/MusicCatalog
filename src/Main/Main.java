@@ -1,6 +1,7 @@
 package Main;
 
 import Models.*;
+import Services.Service;
 import game.Leaderboard;
 
 import java.io.IOException;
@@ -8,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
-import static Main.Service.searchSong;
 
 public class Main {
 
@@ -34,6 +33,7 @@ public class Main {
                 }
                 else{
                     System.out.println("7. View Spotify Songs");
+                    System.out.println("17. Match-up Between Songs");
                 }
 
                 System.out.println("------------User options-----------");
@@ -71,6 +71,10 @@ public class Main {
                     getSpotifySongs();
 
 
+                    break;
+                case 17:
+                    clearConsole();
+                    matchUpBetweenSongsSpotify();
                     break;
                 case 1:
                     createAccount();
@@ -139,6 +143,18 @@ public class Main {
                     break;
             }
         } while (option != 14);
+    }
+
+    private static void matchUpBetweenSongsSpotify() throws IOException {
+        System.out.println("Match-up Between Songs");
+        Service.getSpotifySongs();
+        List<Song> songs = userCatalog.getSpotifySongs();
+        Map <Song,Integer> top =Service.startGame(songs);
+        List<Leaderboard> leaderboards = userCatalog.getLeaderboards();
+        if (leaderboards == null) {
+            leaderboards = new ArrayList<>();
+        }
+        leaderboards.add(new Leaderboard(top, userCatalog.getUserId()));
     }
 
     private static void viewLeaderboars() {
@@ -278,10 +294,15 @@ public class Main {
     }
 
     private static void matchUpBetweenSongs() {
-        int userId = userCatalog.getUser().getId();
-        Map <Song,Integer> top =Service.startGame();
+
+        System.out.println("Match-up Between Songs");
+        List<Song> songs = Service.getSongs();
+        Map <Song,Integer> top =Service.startGame(songs);
         List<Leaderboard> leaderboards = userCatalog.getLeaderboards();
-        leaderboards.add(new Leaderboard(top,userId));
+        if (leaderboards == null) {
+            leaderboards = new ArrayList<>();
+        }
+        leaderboards.add(new Leaderboard(top, userCatalog.getUserId()));
     }
 
     private static void createAccount() {
