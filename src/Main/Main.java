@@ -8,33 +8,36 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
-    private static final Scanner in = new Scanner(System.in);
 
-    private  static List<Leaderboard> leaderboards = new ArrayList<>();
+
+    private static final Scanner in = new Scanner(System.in);
+    private static final Catalog userCatalog =Catalog.getInstance();
     public static void main(String[] args) {
         int option;
 
         do {
-
-            if (Service.getUser()==null){
+            System.out.println("### Music App Menu ###");
+            if (userCatalog.getUser()==null){
                 System.out.println("Currently not logged in");
+                System.out.println("1. Create Account");
+                System.out.println("2. Login");
             }
             else{
-                System.out.println("Logged in as: " + Service.getUser().getEmail());
+                System.out.println("Logged in as: " + userCatalog.getUser().getEmail());
+                System.out.println("3. Match-up Between Songs");
+                System.out.println("4. View Songs");
+                System.out.println("5. View Albums");
+                System.out.println("6. Search Song");
+                System.out.println("7. Search Album");
+                System.out.println("8. View Playlists");
+                System.out.println("9. Add New Song to DB");
+                System.out.println("10. Add Song to Playlist");
+                System.out.println("11. Add Song to Catalog");
+                System.out.println("12. View Leaderboards");
             }
-            System.out.println("### Music App Menu ###");
-            System.out.println("1. Create Account");
-            System.out.println("2. Login");
-            System.out.println("3. Match-up Between Songs");
-            System.out.println("4. View Songs");
-            System.out.println("5. View Albums");
-            System.out.println("6. Search Song");
-            System.out.println("7. Search Album");
-            System.out.println("8. View Playlists");
-            System.out.println("9. Add New Song to DB");
-            System.out.println("10. Add Song to Playlist");
-            System.out.println("11. Add Song to Catalog");
-            System.out.println("12. View Leaderboards");
+
+
+
             System.out.println("13. Exit");
             System.out.print("Select an option: ");
             option = Integer.parseInt(in.nextLine());
@@ -104,7 +107,7 @@ public class Main {
     }
 
     private static void viewLeaderboars() {
-        for (Leaderboard lead : leaderboards){
+        for (Leaderboard lead : userCatalog.getLeaderboards()){
             System.out.println(lead.toString());
         }
     }
@@ -120,7 +123,7 @@ public class Main {
         }
         else{
             int idSong = song.getId();
-            Service.addToCatalog(idSong,Service.getUser().getId());
+            Service.addToCatalog(idSong);
         }
 
     }
@@ -129,7 +132,7 @@ public class Main {
         //to be implemented a partial Search feature
         //add sql error handling for duplicate
         System.out.println("Select the desired playlist");
-        ArrayList<Playlist> playlists = Service.getPlaylists(Service.getUser().getId());
+        List<Playlist> playlists = Service.getPlaylists();
         int i=1;
         for(Playlist playlist : playlists){
             System.out.println(i+"."+playlist.getName());
@@ -168,7 +171,7 @@ public class Main {
     private static void viewPlaylists() {
 //        System.out.println("work in progress");
         System.out.println("User playlists");
-        ArrayList<Playlist> playlists = Service.getPlaylists(Service.getUser().getId());
+        List<Playlist> playlists = Service.getPlaylists();
         int i=1;
         for(Playlist playlist : playlists){
             System.out.println(i+"."+playlist.getName());
@@ -188,7 +191,7 @@ public class Main {
     private static void viewAlbums() {
 //        System.out.println("work in progress");
         System.out.println("User Albums");
-        ArrayList<Album> albums = Service.getAlbums(Service.getUser().getId());
+        List<Album> albums = Service.getAlbums();
         int i=1;
         for(Album album : albums){
             System.out.println(i+"."+album.getTitle());
@@ -197,9 +200,10 @@ public class Main {
     }
 
     private static void matchUpBetweenSongs() {
-        int userId = Service.getUser().getId();
-        Map <Song,Integer> top =Service.startGame(userId);
-        leaderboards.add(new Leaderboard(top,userId));
+        int userId = userCatalog.getUser().getId();
+        Map <Song,Integer> top =Service.startGame();
+        List<Leaderboard> leaderboards = userCatalog.getLeaderboards();
+        leaderboards.add(new Leaderboard(top,userId));d
     }
 
     private static void createAccount() {
@@ -224,7 +228,7 @@ public class Main {
 
     private static void viewSongs() {
         System.out.println("------------Songs------------");
-        ArrayList<Song> songs = Service.getAllSongs();
+        List<Song> songs = Service.getAllSongs();
         if (songs.isEmpty()) {
             System.out.println("No songs available.");
         } else {

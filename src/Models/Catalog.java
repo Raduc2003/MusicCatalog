@@ -1,5 +1,7 @@
 package Models;
 
+import game.Leaderboard;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,9 +9,24 @@ import java.util.List;
 public class Catalog  {
 
     private int userId;
+    private User user;
     private List<Song> songs;
     private List<Album> albums;
     private List<Playlist> playlists;
+    private List<Leaderboard> leaderboards;
+    private List<Song> spotifySongs;
+    private static Catalog catalogInstc=null;
+
+    private Catalog(){}
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public int getUserId() {
         return userId;
@@ -42,6 +59,30 @@ public class Catalog  {
     public void setPlaylists(List<Playlist> playlists) {
         this.playlists = playlists;
     }
+
+    public List<Leaderboard> getLeaderboards() {
+        return leaderboards;
+    }
+
+    public void setLeaderboards(List<Leaderboard> leaderboards) {
+        this.leaderboards = leaderboards;
+    }
+
+    public List<Song> getSpotifySongs() {
+        return spotifySongs;
+    }
+
+    public void setSpotifySongs(List<Song> spotifySongs) {
+        this.spotifySongs = spotifySongs;
+    }
+
+    public static Catalog getInstance() {
+        if(catalogInstc==null){
+            catalogInstc = new Catalog();
+        }
+        return catalogInstc;
+    }
+
 
     @Override
     public String toString() {
