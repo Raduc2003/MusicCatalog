@@ -4,3 +4,7 @@
 "2024-05-21 21:41:06","SELECT","SELECT DISTINCT a.id, a.title, a.artist, a.category FROM Album a JOIN Song_in_album sia ON a.id = sia.idAlbum JOIN Song_in_playlist sip ON sia.idSong = sip.idSong JOIN Playlist p ON sip.idPlaylist = p.id WHERE p.idUser = ?;"
 "2024-05-21 21:41:06","SELECT","SELECT s.id, s.title, s.artist, s.category FROM Song s JOIN Song_in_album sia ON s.id = sia.idSong JOIN Album a ON sia.idAlbum = a.id WHERE a.title = ?;"
 "2024-05-21 21:41:06","SELECT","SELECT s.id, s.title, s.artist, s.category FROM Song s JOIN Song_in_album sia ON s.id = sia.idSong JOIN Album a ON sia.idAlbum = a.id WHERE a.title = ?;"
+"2024-05-22 16:44:59","SELECT","SELECT * FROM User WHERE email=? AND password=?;"
+"2024-05-22 16:45:03","SELECT","SELECT s.id, s.title, s.artist, s.category FROM Song s JOIN Song_in_catalog sic ON s.id = sic.idSong WHERE sic.idUser = ?;"
+"2024-05-22 16:45:08","SELECT","SELECT * FROM Playlist WHERE idUser= ?;"
+"2024-05-22 16:45:08","SELECT","SELECT s.id, s.title, s.artist, s.category FROM Song s JOIN Song_in_playlist sia ON s.id = sia.idSong JOIN Playlist a ON sia.idPlaylist = a.id WHERE a.name = ?;"

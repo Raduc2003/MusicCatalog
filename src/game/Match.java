@@ -92,4 +92,10 @@ public class Match {
         return sortByValue(topDict);
     }
 
+    @Override
+    public String toString() {
+        return "Match{" +
+                "topDict=" + topDict +
+                '}';
+    }
 }

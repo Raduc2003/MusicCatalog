@@ -1,0 +1,7 @@
+database:
+  url: "jdbc:mysql://89.42.218.32:3306/r116501soft_song_catalog"
+  user: "r116501soft_root"
+  password: "zYP~#3oFg&n="
+spotify:
+    client_id: "11b84b74a00b41c69846a9dd74380ee5"
+    client_secret: "18a65d7cdc6046a989b3d580af84105b"

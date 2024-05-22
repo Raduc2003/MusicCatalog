@@ -15,14 +15,17 @@ import org.apache.http.util.EntityUtils;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
+import org.yaml.snakeyaml.Yaml;
 
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 
 public class SpotifyWrapper {
@@ -34,8 +37,20 @@ public class SpotifyWrapper {
     private static String authorizationCode;
 
     private SpotifyWrapper() {
-        clientId = "11b84b74a00b41c69846a9dd74380ee5";
-        clientSecret = "18a65d7cdc6046a989b3d580af84105b";
+        Yaml yaml = new Yaml();
+        try (InputStream in = JDBC.class.getClassLoader().getResourceAsStream("config.yml")) {
+            if (in != null) {
+                Map<String, Object> config = yaml.load(in);
+                Map<String, String> dbConfig = (Map<String, String>) config.get("spotify");
+                clientId = dbConfig.get("client_id");
+                clientSecret = dbConfig.get("client_secret");
+            } else {
+                throw new RuntimeException("Failed to load config.yml");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to load database configuration", e);
+        }
     }
 
     public static SpotifyWrapper getInstance() {
